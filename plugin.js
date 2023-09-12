@@ -85,7 +85,7 @@ const convertedData =  {
   "URL": "https://www.simplylocalize.com/home",
   "InstantPhraseList": parsedData.map(item => ({
     "Phrase": item.text,
-    "UrlPath": "https://www.simplylocalize.com/home", 
+    "UrlPath": "https://www.simplylocalize.com/home", //ask this in meet
     "XPath": item.xpath
   }))
 };
@@ -116,18 +116,18 @@ addPhrase(addphrasedata);
 
 
 const applyTranslations = (language) => {
-  const details = apiResponse.filePathDetails.find((detail) => detail.language === language);
+  // const details = apiResponse.filePathDetails.find((detail) => detail.language === language);
 
-  if (!details) {
-    console.error(`Translations for language ${language} not found.`);
-    return;
-  }
+  // if (!details) {
+  //   console.error(`Translations for language ${language} not found.`);
+  //   return;
+  // }
 
   // Replace 'apiCallForTranslations' with your actual API call logic
-  apiCallForTranslations(details.filePath)
-    .then((translations) => {
+  // apiCallForTranslations(details.filePath)
+  //   .then((translations) => {
       // Iterate through translations and update the DOM as you did before
-      document.addEventListener('DOMContentLoaded', () => {
+      language.addEventListener('DOMContentLoaded', () => {
         translations.Phrases.forEach((phraseInfo) => {
         
         const xpath = phraseInfo.PhraseDetails[0].XPath;
@@ -144,11 +144,11 @@ const applyTranslations = (language) => {
         }
       });
     });
-    })
-    .catch((error) => {S
-      console.error(`Error fetching translations for language ${language}:`, error);
-    window.location.href = window.location.href;
-    });
+//     })
+//     .catch((error) => {S
+//       console.error(`Error fetching translations for language ${language}:`, error);
+//     window.location.href = window.location.href;
+//     });
 };    
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -165,8 +165,6 @@ API.validateAPI({ validatedata: validateData })
          const isValidate = data.data.isValidate;
          const details = data.data.filePathDetails
          const options = details.map(item => item.language)
-         const path = details.map(item => item.filePath)
-         console.log(path)
          fetch(path[1])
             .then(response => response.json())
             .then(data => {
@@ -219,9 +217,9 @@ API.validateAPI({ validatedata: validateData })
                   optionItem.addEventListener('click', function() {
                     dropdownButton.textContent = optionText;
                     dropdownList.style.display = 'none';
-                    // const apiresponse = {"Domain":"https://yogendrapawar.online/","Phrases":[{"PhraseHash":"ead164f91f600f8140bf89c4112ace88","PhraseKey":"Welcome to Our Website","Phrase":"欢迎访问我们的网站","PhraseDetails":[{"UrlPath":"https://www.simplylocalize.com/home","XPath":"//html[1]//body[2]//header[1]//h1[1]"}]},{"PhraseHash":"8a0bc2895a6f8bf291123745b215d0b1","PhraseKey":"© 2023 Company Name. All rights reserved.","Phrase":"© 2023 公司名称。保留所有权利。","PhraseDetails":[{"UrlPath":"https://www.simplylocalize.com/home","XPath":"/html[1]/body[2]/footer[3]/p[1]"}]},
-                    // {"PhraseHash":"ee87f95cc23bb98dba331a9767cab790","PhraseKey":"Capitalize Selected Text","Phrase":"大写所选文本","PhraseDetails":[{"UrlPath":"https://www.simplylocalize.com/home","XPath":"/html[1]/body[2]/button[4]"}]}]}
-                    applyTranslations(optionText);
+                    const apiresponse = {"Domain":"https://yogendrapawar.online/","Phrases":[{"PhraseHash":"ead164f91f600f8140bf89c4112ace88","PhraseKey":"Welcome to Our Website","Phrase":"欢迎访问我们的网站","PhraseDetails":[{"UrlPath":"https://www.simplylocalize.com/home","XPath":"//html[1]//body[2]//header[1]//h1[1]"}]},{"PhraseHash":"8a0bc2895a6f8bf291123745b215d0b1","PhraseKey":"© 2023 Company Name. All rights reserved.","Phrase":"© 2023 公司名称。保留所有权利。","PhraseDetails":[{"UrlPath":"https://www.simplylocalize.com/home","XPath":"/html[1]/body[2]/footer[3]/p[1]"}]},
+                    {"PhraseHash":"ee87f95cc23bb98dba331a9767cab790","PhraseKey":"Capitalize Selected Text","Phrase":"大写所选文本","PhraseDetails":[{"UrlPath":"https://www.simplylocalize.com/home","XPath":"/html[1]/body[2]/button[4]"}]}]}
+                    applyTranslations(apiresponse);
                     
                   });
                 });
