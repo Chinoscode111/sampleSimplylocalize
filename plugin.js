@@ -127,8 +127,8 @@ const applyTranslations = (language) => {
   // apiCallForTranslations(details.filePath)
   //   .then((translations) => {
       // Iterate through translations and update the DOM as you did before
-      language.addEventListener('DOMContentLoaded', () => {
-        translations.Phrases.forEach((phraseInfo) => {
+      document.addEventListener('DOMContentLoaded', () => {
+        language.Phrases.forEach((phraseInfo) => {
         
         const xpath = phraseInfo.PhraseDetails[0].XPath;
         
