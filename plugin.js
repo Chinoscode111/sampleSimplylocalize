@@ -165,14 +165,14 @@ API.validateAPI({ validatedata: validateData })
          const isValidate = data.data.isValidate;
          const details = data.data.filePathDetails
          const options = details.map(item => item.language)
-         fetch(path[1])
-            .then(response => response.json())
-            .then(data => {
-               console.log(data)
-            })
-          .catch(error => {
-            console.error('Error fetching/parsing JSON:', error);
-          });
+        //  fetch(path[1])
+        //     .then(response => response.json())
+        //     .then(data => {
+        //        console.log(data)
+        //     })
+        //   .catch(error => {
+        //     console.error('Error fetching/parsing JSON:', error);
+        //   });
          if (isValidate){
             
            
