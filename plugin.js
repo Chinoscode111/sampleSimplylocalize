@@ -2,11 +2,15 @@ import { API } from "./api.js"
 
 const validateData = {
     InstantApiKey: "ENCjRrj71t4Ce1aVQnbL1to5OeqPmjzwuGNA",
-    Domain : "https://yogendrapawar.online/"
+    Domain : "https://yogendrapawar.online/",
+
+    // InstantApiKey: "9BWsx87ITaDle3yBQeXmi9W8OlceGnrRThSM",
+    // Domain : "https://chinoscode111.github.io/test/"
 }
 
 const parsePage = (element, parentPath = []) => {
   const textNodes = [];
+
   const commonHtmlTags = [
     'DIV', 'SECTION', 'ARTICLE', 'HEADER', 'FOOTER',
     'NAV', 'ASIDE', 'MAIN', 'FIGURE', 'FIGCAPTION',
@@ -46,37 +50,35 @@ const parsePage = (element, parentPath = []) => {
     });
   };
 
-
-
   traverse(element, parentPath);
-  return textNodes.map(nodeInfo => {
-    const node = nodeInfo.node;
-    const nodePath = [];
-    let currentNode = node;
+  console.log(textNodes);
 
-    while (currentNode !== document) {
-        if (currentNode.parentNode) {
-            const tagName = currentNode.tagName.toLowerCase();
-            const index = Array.from(currentNode.parentNode.children).indexOf(currentNode) + 1;
+  function collectElementXPaths(node, currentPath) {
+    if (node.nodeType === Node.ELEMENT_NODE) {
+      currentPath += '/' + node.tagName.toLowerCase();
+      const index = Array.from(node.parentNode.childNodes).filter(e => e.tagName === node.tagName).indexOf(node) + 1;
+      currentPath += '[' + index + ']';
 
-            // If an element has an `id` attribute, use it as part of the XPath
-            const idAttribute = currentNode.getAttribute('id');
-            if (idAttribute) {
-                nodePath.unshift(`${tagName}[@id="${idAttribute}"]`);
-                break; // Exit the loop because IDs are unique
-            }
-
-            nodePath.unshift(`${tagName}[${index}]`);
-            currentNode = currentNode.parentNode;
-        } else {
-            break; // Exit the loop if we reach the document root
+      if (node.childNodes.length === 1 && node.childNodes[0].nodeType === Node.TEXT_NODE) {
+        const text = node.childNodes[0].textContent.trim();
+        if (textNodes.some(item => item.text === text && text.length > 0)) {
+          const index = textNodes.findIndex(item => item.text === text);
+          textNodes[index].xpath = currentPath;
         }
-    }
+      }
 
-    const nodeXPath = nodePath.join('/');
-    return { ...nodeInfo, xpath: `/${nodeXPath}` };
-  });
+      for (let i = 0; i < node.childNodes.length; i++) {
+        collectElementXPaths(node.childNodes[i], currentPath);
+      }
+    }
+  }
+
+  collectElementXPaths(document.documentElement, '');
+
+  return textNodes;
 };
+
+
 const parsedData = parsePage(document.body);
 
 const convertedData =  {
@@ -127,7 +129,7 @@ const applyTranslations = (language) => {
   // apiCallForTranslations(details.filePath)
   //   .then((translations) => {
       // Iterate through translations and update the DOM as you did before
-      document.addEventListener('DOMContentLoaded', () => {
+      // document.addEventListener('DOMContentLoaded', () => {
         language.Phrases.forEach((phraseInfo) => {
         
         const xpath = phraseInfo.PhraseDetails[0].XPath;
@@ -143,7 +145,7 @@ const applyTranslations = (language) => {
           }
         }
       });
-    });
+    // });
 //     })
 //     .catch((error) => {S
 //       console.error(`Error fetching translations for language ${language}:`, error);
@@ -217,8 +219,8 @@ API.validateAPI({ validatedata: validateData })
                   optionItem.addEventListener('click', function() {
                     dropdownButton.textContent = optionText;
                     dropdownList.style.display = 'none';
-                    const apiresponse = {"Domain":"https://yogendrapawar.online/","Phrases":[{"PhraseHash":"ead164f91f600f8140bf89c4112ace88","PhraseKey":"Welcome to Our Website","Phrase":"欢迎访问我们的网站","PhraseDetails":[{"UrlPath":"https://www.simplylocalize.com/home","XPath":"//html[1]//body[2]//header[1]//h1[1]"}]},{"PhraseHash":"8a0bc2895a6f8bf291123745b215d0b1","PhraseKey":"© 2023 Company Name. All rights reserved.","Phrase":"© 2023 公司名称。保留所有权利。","PhraseDetails":[{"UrlPath":"https://www.simplylocalize.com/home","XPath":"/html[1]/body[2]/footer[3]/p[1]"}]},
-                    {"PhraseHash":"ee87f95cc23bb98dba331a9767cab790","PhraseKey":"Capitalize Selected Text","Phrase":"大写所选文本","PhraseDetails":[{"UrlPath":"https://www.simplylocalize.com/home","XPath":"/html[1]/body[2]/button[4]"}]}]}
+                    const apiresponse = {"Domain":"https://yogendrapawar.online/","Phrases":[{"PhraseHash":"ead164f91f600f8140bf89c4112ace88","PhraseKey":"Welcome to Our Website","Phrase":"欢迎访问我们的网站","PhraseDetails":[{"UrlPath":"https://www.simplylocalize.com/home","XPath":"//html[1]//body/header/h1"}]},{"PhraseHash":"8a0bc2895a6f8bf291123745b215d0b1","PhraseKey":"© 2023 Company Name. All rights reserved.","Phrase":"© 2023 公司名称。保留所有权利。","PhraseDetails":[{"UrlPath":"https://www.simplylocalize.com/home","XPath":"/html[1]/body[2]/footer[3]/p[1]"}]},
+                    {"PhraseHash":"ee87f95cc23bb98dba331a9767cab790","PhraseKey":"Capitalize Selected Text","Phrase":"大写所选文本","PhraseDetails":[{"UrlPath":"https://www.simplylocalize.com/home","XPath":"/html[1]/body[1]/button[2]"}]}]}
                     applyTranslations(apiresponse);
                     
                   });
@@ -246,3 +248,8 @@ API.validateAPI({ validatedata: validateData })
     });
 
   });
+
+
+
+
+
