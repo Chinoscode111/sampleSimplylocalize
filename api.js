@@ -1,4 +1,4 @@
-const baseURL = "http://yogendrapawar.online/simplylocalizeapi/api/InstantPhrase";
+const baseURL = "hhttps://www.simplilocalize.com/simplylocalizeapi//api/InstantPhrase";
 
 
 
